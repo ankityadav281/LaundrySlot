@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">LaundrySlot</string>
+
+    <!-- Navigation -->
+    <string name="nav_machines">মেশিন</string>
+    <string name="nav_book_slot">স্লট বুকিং</string>
+    <string name="nav_my_slots">আমার স্লট</string>
+    <string name="nav_profile">প্রোফাইল</string>
+    <string name="dashboard">মেশিন</string>
+    <string name="add">বুকিং</string>
+    <string name="profile">প্রোফাইল</string>
+
+    <!-- Dashboard -->
+    <string name="welcome_hosteller">নমস্কার, %s 👋</string>
+    <string name="namaste">নমস্কার, %s 👋</string>
+    <string name="hostel_room_badge">রুম %1$s • %2$s</string>
+    <string name="available_machines">উপলব্ধ</string>
+    <string name="in_use_machines">চলছে</string>
+    <string name="under_maintenance">রক্ষণাবেক্ষণ</string>
+    <string name="total_machines">মোট</string>
+    <string name="all_blocks">সব ব্লক</string>
+    <string name="block_a">ব্লক A</string>
+    <string name="block_b">ব্লক B</string>
+    <string name="all_floors">সব তলা</string>
+    <string name="floor_n">%d তলা</string>
+    <string name="filter_all">সব</string>
+    <string name="filter_washers">ওয়াশার</string>
+    <string name="filter_dryers">ড্রায়ার</string>
+    <string name="available_only">শুধু উপলব্ধ</string>
+    <string name="search_machines_hint">মেশিন খুঁজুন…</string>
+    <string name="no_machines_found">কোনো মেশিন পাওয়া যায়নি</string>
+    <string name="quick_start_wash">ধোয়া শুরু করুন</string>
+    <string name="book_this_machine">স্লট বুক করুন</string>
+    <string name="report_issue">সমস্যা জানান</string>
+    <string name="quick_actions">দ্রুত কাজ</string>
+    <string name="hostel_notices_rules">হোস্টেল লন্ড্রি নিয়ম</string>
+    <string name="active_cycle_running">চলমান ওয়াশ সাইকেল</string>
+    <string name="mins_left">%d মিনিট বাকি</string>
+    <string name="capacity_kg">%s কেজি ক্ষমতা</string>
+
+    <!-- Slot Booking -->
+    <string name="book_laundry_slot">লন্ড্রি স্লট বুক করুন</string>
+    <string name="schedule_appointment">লন্ড্রি স্লট বুক করুন</string>
+    <string name="select_date">তারিখ নির্বাচন</string>
+    <string name="today">আজ</string>
+    <string name="tomorrow">কাল</string>
+    <string name="select_machine">মেশিন নির্বাচন</string>
+    <string name="select_time_slot">সময় স্লট নির্বাচন</string>
+    <string name="select_wash_cycle">ওয়াশ সাইকেল নির্বাচন</string>
+    <string name="notes_optional">বিশেষ নির্দেশ (ঐচ্ছিক)</string>
+    <string name="confirm_slot_booking">বুকিং নিশ্চিত করুন</string>
+    <string name="confirm_booking">বুকিং নিশ্চিত করুন</string>
+    <string name="slot_booked_success_title">স্লট সফলভাবে বুক হয়েছে!</string>
+    <string name="appointment_success">স্লট বুক হয়েছে!</string>
+    <string name="slot_already_booked">এই স্লটটি ইতিমধ্যে বুক করা আছে</string>
+    <string name="select_machine_error">দয়া করে একটি উপলব্ধ মেশিন নির্বাচন করুন</string>
+    <string name="ok">ঠিক আছে</string>
+    <string name="success">সফল</string>
+    <string name="error">ত্রুটি</string>
+
+    <!-- Profile & Settings -->
+    <string name="hosteller_profile">ছাত্র প্রোফাইল</string>
+    <string name="student_id">ছাত্র আইডি</string>
+    <string name="room_number">রুম নম্বর</string>
+    <string name="hostel_block">হোস্টেল ব্লক</string>
+    <string name="floor">তলা</string>
+    <string name="total_washes_done">মোট ধোয়া</string>
+    <string name="upcoming_reservations">আসন্ন স্লট</string>
+    <string name="notification_settings">বিজ্ঞপ্তি</string>
+    <string name="language_selection">ভাষা নির্বাচন</string>
+    <string name="change_mpin">MPIN পরিবর্তন করুন</string>
+    <string name="set_mpin">MPIN সেট করুন</string>
+    <string name="logout">লগআউট</string>
+    <string name="logout_confirm_title">লগআউট</string>
+    <string name="logout_confirm_msg">আপনি কি লগআউট করতে চান?</string>
+    <string name="cancel">বাতিল</string>
+    <string name="save">সংরক্ষণ</string>
+    <string name="close">বন্ধ</string>
+    <string name="select_language">ভাষা নির্বাচন করুন</string>
+    <string name="student_id_or_email_label">ছাত্র আইডি বা ইমেইল</string>
+</resources>

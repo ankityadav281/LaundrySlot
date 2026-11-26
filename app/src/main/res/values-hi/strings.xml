@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">LaundrySlot</string>
+
+    <!-- Navigation -->
+    <string name="nav_machines">मशीनें</string>
+    <string name="nav_book_slot">स्लॉट बुक करें</string>
+    <string name="nav_my_slots">मेरे स्लॉट</string>
+    <string name="nav_profile">प्रोफाइल</string>
+    <string name="dashboard">मशीनें</string>
+    <string name="add">बुक करें</string>
+    <string name="profile">प्रोफाइल</string>
+
+    <!-- Dashboard -->
+    <string name="welcome_hosteller">नमस्ते, %s 👋</string>
+    <string name="namaste">नमस्ते, %s 👋</string>
+    <string name="hostel_room_badge">कमरा %1$s • %2$s</string>
+    <string name="available_machines">उपलब्ध</string>
+    <string name="in_use_machines">चालू है</string>
+    <string name="under_maintenance">मरम्मत में</string>
+    <string name="total_machines">कुल</string>
+    <string name="all_blocks">सभी ब्लॉक</string>
+    <string name="block_a">ब्लॉक A</string>
+    <string name="block_b">ब्लॉक B</string>
+    <string name="all_floors">सभी मंजिलें</string>
+    <string name="floor_n">मंजिल %d</string>
+    <string name="filter_all">सभी</string>
+    <string name="filter_washers">वॉशिंग मशीन</string>
+    <string name="filter_dryers">ड्रायर</string>
+    <string name="available_only">केवल उपलब्ध</string>
+    <string name="search_machines_hint">मशीन नाम या आईडी से खोजें…</string>
+    <string name="no_machines_found">कोई मशीन नहीं मिली</string>
+    <string name="quick_start_wash">धुलाई शुरू करें</string>
+    <string name="book_this_machine">स्लॉट बुक करें</string>
+    <string name="report_issue">समस्या बताएं</string>
+    <string name="quick_actions">त्वरित कार्य</string>
+    <string name="hostel_notices_rules">हॉस्टल लाँड्री नियम</string>
+    <string name="active_cycle_running">सक्रिय धुलाई चक्र</string>
+    <string name="mins_left">%d मिनट शेष</string>
+    <string name="capacity_kg">%s किलो क्षमता</string>
+
+    <!-- Slot Booking -->
+    <string name="book_laundry_slot">लाँड्री स्लॉट बुक करें</string>
+    <string name="schedule_appointment">लाँड्री स्लॉट बुक करें</string>
+    <string name="select_date">तारीख चुनें</string>
+    <string name="today">आज</string>
+    <string name="tomorrow">कल</string>
+    <string name="select_machine">मशीन चुनें</string>
+    <string name="select_time_slot">समय स्लॉट चुनें</string>
+    <string name="select_wash_cycle">वॉश चक्र चुनें</string>
+    <string name="notes_optional">विशेष निर्देश (वैकल्पिक)</string>
+    <string name="confirm_slot_booking">बुकिंग की पुष्टि करें</string>
+    <string name="confirm_booking">बुकिंग की पुष्टि करें</string>
+    <string name="slot_booked_success_title">स्लॉट सफलतापूर्वक बुक हुआ!</string>
+    <string name="appointment_success">स्लॉट बुक हो गया!</string>
+    <string name="slot_already_booked">यह स्लॉट पहले से बुक है</string>
+    <string name="select_machine_error">कृपया एक उपलब्ध मशीन चुनें</string>
+    <string name="ok">ठीक है</string>
+    <string name="success">सफलता</string>
+    <string name="error">त्रुटि</string>
+
+    <!-- Profile & Settings -->
+    <string name="hosteller_profile">छात्र प्रोफाइल</string>
+    <string name="student_id">छात्र आईडी</string>
+    <string name="room_number">कमरा नंबर</string>
+    <string name="hostel_block">हॉस्टल ब्लॉक</string>
+    <string name="floor">मंजिल</string>
+    <string name="total_washes_done">कुल धुलाई</string>
+    <string name="upcoming_reservations">आगामी स्लॉट</string>
+    <string name="notification_settings">सूचनाएं</string>
+    <string name="language_selection">भाषा चयन</string>
+    <string name="change_mpin">4-अंकीय MPIN बदलें</string>
+    <string name="set_mpin">MPIN सेट करें</string>
+    <string name="logout">लॉगआउट</string>
+    <string name="logout_confirm_title">लॉगआउट</string>
+    <string name="logout_confirm_msg">क्या आप वाकई लॉगआउट करना चाहते हैं?</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="save">सेव करें</string>
+    <string name="close">बंद करें</string>
+    <string name="select_language">भाषा चुनें</string>
+    <string name="student_id_or_email_label">छात्र आईडी या ईमेल</string>
+</resources>

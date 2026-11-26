@@ -1,0 +1,303 @@
+rules_version = '2';
+
+// ===============================================================
+// Assumed Data Model (LaundrySlot)
+// ===============================================================
+//
+// Collection: hostellers
+// Document ID: {studentId} (lowercase alphanumeric/underscore, 3..32 chars)
+// Fields:
+//   - studentId: string (required, == documentId, immutable)
+//   - authUid: string (required, == request.auth.uid, immutable)
+//   - name: string (required, 1..80 chars)
+//   - email: string (required, valid email, <= 120 chars)
+//   - roomNumber: string (required, 1..20 chars)
+//   - hostelBlock: string (required, 1..40 chars)
+//   - floor: int (required, 1..10)
+//   - phoneNumber: string (optional, <= 20 chars)
+//   - role: string (required, 'Hosteller')
+//
+// Subcollection: hostellers/{studentId}/bookings/{bookingId}
+// Fields:
+//   - id, machineId, machineName, machineType, hostellerId, hostellerName,
+//     roomNumber, hostelBlock, date, timeSlot, startTimeMillis, endTimeMillis,
+//     cycleType, status, bookingCode, reminderSet, notes, createdAt, lastUpdated, syncStatus
+//
+// Collection: machine_slot_locks
+// Document ID: {machineId}_{dateMillis}_{normalizedTimeSlot}
+// Fields:
+//   - machineId, machineName, date, timeSlot, startTimeMillis, endTimeMillis,
+//     hostellerId, authUid, bookingId, status ('UPCOMING' | 'CANCELLED'), updatedAt
+//
+// Collection: machines
+// Document ID: {machineId}
+// Fields:
+//   - id, name, blockName, floor, type, status, capacityKg,
+//     currentCycleName, cycleEstimatedEndTime, currentUserRoomOrName, lastMaintenanceDate
+//
+// Collection: machine_issues
+// Document ID: {issueId}
+// Fields:
+//   - id, machineId, machineName, reportedBy, roomNumber, issueCategory,
+//     description, reportedAt, isResolved, syncStatus
+//
+// NOTE:
+// - Hosteller profile documents store PII (email, roomNumber) and are restricted to
+//   the owning Firebase Auth UID (`resource.data.authUid == request.auth.uid`).
+// - Machines catalog documents must be provisioned by an admin (`admin == true` custom claim).
+// - Hostellers may transition machines between AVAILABLE <-> IN_USE or flag OUT_OF_ORDER,
+//   but only admins may clear OUT_OF_ORDER back to AVAILABLE or modify machine hardware specs.
+// - Enable Firebase App Check enforcement in production before public distribution.
+// ===============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.admin == true;
+    }
+
+    function validString(val, minLen, maxLen) {
+      return val is string && val.size() >= minLen && val.size() <= maxLen;
+    }
+
+    function validOptionalNullableString(data, key, maxLen) {
+      return !(key in data) || data[key] == null || (data[key] is string && data[key].size() <= maxLen);
+    }
+
+    function isValidEmail(email) {
+      return email is string &&
+        email.size() <= 120 &&
+        email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isHostellerOwner(studentId) {
+      return isAuthenticated() &&
+        exists(/databases/$(database)/documents/hostellers/$(studentId)) &&
+        get(/databases/$(database)/documents/hostellers/$(studentId)).data.authUid == request.auth.uid;
+    }
+
+    function isValidUserDoc(data, studentId) {
+      return data.keys().hasAll([
+          'studentId', 'authUid', 'name', 'email', 'roomNumber', 'hostelBlock', 'floor', 'role'
+        ]) &&
+        data.keys().hasOnly([
+          'studentId', 'authUid', 'name', 'email', 'roomNumber', 'hostelBlock', 'floor',
+          'phoneNumber', 'role'
+        ]) &&
+        data.studentId == studentId &&
+        validString(data.studentId, 3, 32) &&
+        validString(data.authUid, 1, 128) &&
+        validString(data.name, 1, 80) &&
+        isValidEmail(data.email) &&
+        validString(data.roomNumber, 1, 20) &&
+        validString(data.hostelBlock, 1, 40) &&
+        data.floor is int && data.floor >= 1 && data.floor <= 10 &&
+        validOptionalNullableString(data, 'phoneNumber', 20) &&
+        data.role in ['Hosteller'];
+    }
+
+    function isValidBookingDoc(data, studentId, bookingId) {
+      return data.keys().hasAll([
+          'id', 'machineId', 'machineName', 'hostellerId', 'date', 'timeSlot',
+          'startTimeMillis', 'endTimeMillis', 'cycleType', 'status', 'bookingCode',
+          'createdAt', 'lastUpdated', 'syncStatus'
+        ]) &&
+        data.keys().hasOnly([
+          'id', 'machineId', 'machineName', 'machineType', 'hostellerId', 'hostellerName',
+          'roomNumber', 'hostelBlock', 'date', 'timeSlot', 'startTimeMillis', 'endTimeMillis',
+          'cycleType', 'status', 'bookingCode', 'reminderSet', 'notes', 'createdAt',
+          'lastUpdated', 'syncStatus'
+        ]) &&
+        data.id == bookingId &&
+        data.hostellerId == studentId &&
+        validString(data.machineId, 1, 32) &&
+        validString(data.machineName, 1, 80) &&
+        validOptionalNullableString(data, 'hostellerName', 80) &&
+        validOptionalNullableString(data, 'roomNumber', 20) &&
+        validOptionalNullableString(data, 'hostelBlock', 40) &&
+        validString(data.timeSlot, 1, 40) &&
+        validString(data.cycleType, 1, 60) &&
+        validString(data.bookingCode, 1, 32) &&
+        data.date is int && data.date > 0 &&
+        data.startTimeMillis is int && data.endTimeMillis is int &&
+        data.endTimeMillis > data.startTimeMillis &&
+        data.createdAt is int && data.lastUpdated is int &&
+        data.status in ['UPCOMING', 'ACTIVE', 'COMPLETED', 'CANCELLED'] &&
+        data.syncStatus in ['SYNCED', 'PENDING', 'ERROR'] &&
+        (!('reminderSet' in data) || data.reminderSet is bool) &&
+        validOptionalNullableString(data, 'notes', 300);
+    }
+
+    function isValidSlotLockDoc(data) {
+      return data.keys().hasAll([
+          'machineId', 'machineName', 'date', 'timeSlot', 'startTimeMillis', 'endTimeMillis',
+          'hostellerId', 'authUid', 'bookingId', 'status', 'updatedAt'
+        ]) &&
+        data.keys().hasOnly([
+          'machineId', 'machineName', 'date', 'timeSlot', 'startTimeMillis', 'endTimeMillis',
+          'hostellerId', 'authUid', 'bookingId', 'status', 'updatedAt'
+        ]) &&
+        validString(data.machineId, 1, 32) &&
+        validString(data.machineName, 1, 80) &&
+        validString(data.timeSlot, 1, 40) &&
+        validString(data.hostellerId, 3, 32) &&
+        validString(data.authUid, 1, 128) &&
+        validString(data.bookingId, 1, 64) &&
+        data.date is int && data.date > 0 &&
+        data.startTimeMillis is int && data.endTimeMillis is int &&
+        data.endTimeMillis > data.startTimeMillis &&
+        data.updatedAt is int &&
+        data.status in ['UPCOMING', 'CANCELLED'];
+    }
+
+    function isValidMachineDoc(data, machineId) {
+      return data.keys().hasAll(['id', 'name', 'blockName', 'floor', 'type', 'status', 'capacityKg']) &&
+        data.keys().hasOnly([
+          'id', 'name', 'blockName', 'floor', 'type', 'status', 'capacityKg',
+          'currentCycleName', 'cycleEstimatedEndTime', 'currentUserRoomOrName', 'lastMaintenanceDate'
+        ]) &&
+        data.id == machineId &&
+        validString(data.name, 1, 80) &&
+        validString(data.blockName, 1, 40) &&
+        data.floor is int && data.floor >= 1 && data.floor <= 10 &&
+        data.type in ['FRONT_LOAD', 'TOP_LOAD', 'DRYER', 'COMBO'] &&
+        data.status in ['AVAILABLE', 'IN_USE', 'RESERVED', 'OUT_OF_ORDER'] &&
+        data.capacityKg is number && data.capacityKg > 0 && data.capacityKg <= 50 &&
+        validOptionalNullableString(data, 'currentCycleName', 80) &&
+        (!('cycleEstimatedEndTime' in data) || data.cycleEstimatedEndTime == null || data.cycleEstimatedEndTime is int) &&
+        validOptionalNullableString(data, 'currentUserRoomOrName', 80) &&
+        (!('lastMaintenanceDate' in data) || data.lastMaintenanceDate is int);
+    }
+
+    function isValidHostellerMachineTransition(prev, next) {
+      return next.id == prev.id &&
+        next.name == prev.name &&
+        next.blockName == prev.blockName &&
+        next.floor == prev.floor &&
+        next.type == prev.type &&
+        next.capacityKg == prev.capacityKg &&
+        prev.status != 'OUT_OF_ORDER' &&
+        (
+          (prev.status == 'AVAILABLE' && next.status in ['IN_USE', 'OUT_OF_ORDER']) ||
+          (prev.status == 'IN_USE' && next.status in ['AVAILABLE', 'OUT_OF_ORDER']) ||
+          (prev.status == 'RESERVED' && next.status in ['AVAILABLE', 'IN_USE', 'OUT_OF_ORDER'])
+        );
+    }
+
+    function isValidIssueDoc(data, issueId) {
+      return data.keys().hasAll([
+          'id', 'machineId', 'machineName', 'reportedBy', 'roomNumber',
+          'issueCategory', 'description', 'reportedAt', 'isResolved', 'syncStatus'
+        ]) &&
+        data.keys().hasOnly([
+          'id', 'machineId', 'machineName', 'reportedBy', 'roomNumber',
+          'issueCategory', 'description', 'reportedAt', 'isResolved', 'syncStatus'
+        ]) &&
+        data.id == issueId &&
+        validString(data.machineId, 1, 32) &&
+        validString(data.machineName, 1, 80) &&
+        validString(data.reportedBy, 1, 80) &&
+        validString(data.roomNumber, 1, 20) &&
+        validString(data.issueCategory, 1, 80) &&
+        data.description is string && data.description.size() <= 500 &&
+        data.reportedAt is int && data.reportedAt > 0 &&
+        data.isResolved is bool &&
+        data.syncStatus in ['SYNCED', 'PENDING', 'ERROR'];
+    }
+
+    match /hostellers/{studentId} {
+      allow get: if (isAuthenticated() && (resource == null || resource.data.authUid == request.auth.uid)) || isAdmin();
+      allow list: if (isAuthenticated() && resource.data.authUid == request.auth.uid) || isAdmin();
+
+      allow create: if isAuthenticated() &&
+        isValidUserDoc(request.resource.data, studentId) &&
+        request.resource.data.authUid == request.auth.uid &&
+        request.resource.data.role == 'Hosteller';
+
+      allow update: if isAuthenticated() &&
+        isValidUserDoc(request.resource.data, studentId) &&
+        resource.data.authUid == request.auth.uid &&
+        request.resource.data.authUid == resource.data.authUid &&
+        request.resource.data.studentId == resource.data.studentId &&
+        request.resource.data.role == resource.data.role;
+
+      allow delete: if isAdmin();
+
+      match /bookings/{bookingId} {
+        allow read: if isHostellerOwner(studentId) || isAdmin();
+
+        allow create: if isHostellerOwner(studentId) &&
+          isValidBookingDoc(request.resource.data, studentId, bookingId);
+
+        allow update: if isHostellerOwner(studentId) &&
+          isValidBookingDoc(request.resource.data, studentId, bookingId) &&
+          request.resource.data.id == resource.data.id &&
+          request.resource.data.hostellerId == resource.data.hostellerId &&
+          request.resource.data.createdAt == resource.data.createdAt;
+
+        allow delete: if isAdmin();
+      }
+    }
+
+    match /machine_slot_locks/{lockId} {
+      allow read: if isAuthenticated();
+
+      allow create: if isAuthenticated() &&
+        isValidSlotLockDoc(request.resource.data) &&
+        request.resource.data.authUid == request.auth.uid &&
+        request.resource.data.status == 'UPCOMING';
+
+      allow update: if isAuthenticated() &&
+        isValidSlotLockDoc(request.resource.data) &&
+        request.resource.data.machineId == resource.data.machineId &&
+        request.resource.data.date == resource.data.date &&
+        request.resource.data.timeSlot == resource.data.timeSlot &&
+        request.resource.data.startTimeMillis == resource.data.startTimeMillis &&
+        request.resource.data.endTimeMillis == resource.data.endTimeMillis &&
+        (
+          (
+            resource.data.authUid == request.auth.uid &&
+            request.resource.data.authUid == resource.data.authUid &&
+            request.resource.data.hostellerId == resource.data.hostellerId &&
+            request.resource.data.status in ['UPCOMING', 'CANCELLED']
+          ) ||
+          (
+            resource.data.status == 'CANCELLED' &&
+            request.resource.data.authUid == request.auth.uid &&
+            request.resource.data.status == 'UPCOMING'
+          )
+        );
+
+      allow delete: if isAdmin();
+    }
+
+    match /machines/{machineId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin() && isValidMachineDoc(request.resource.data, machineId);
+      allow update: if (isAdmin() && isValidMachineDoc(request.resource.data, machineId)) ||
+        (isAuthenticated() &&
+          isValidMachineDoc(request.resource.data, machineId) &&
+          isValidHostellerMachineTransition(resource.data, request.resource.data));
+      allow delete: if isAdmin();
+    }
+
+    match /machine_issues/{issueId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() &&
+        isValidIssueDoc(request.resource.data, issueId) &&
+        request.resource.data.isResolved == false;
+      allow update: if isAdmin() && isValidIssueDoc(request.resource.data, issueId);
+      allow delete: if isAdmin();
+    }
+  }
+}

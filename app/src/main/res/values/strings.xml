@@ -1,0 +1,168 @@
+<resources>
+    <string name="app_name">LaundrySlot</string>
+
+    <!-- Navigation -->
+    <string name="nav_machines">Machines</string>
+    <string name="nav_book_slot">Book Slot</string>
+    <string name="nav_my_slots">My Slots</string>
+    <string name="nav_profile">Profile</string>
+    <string name="dashboard">Machines</string>
+    <string name="add">Book</string>
+    <string name="profile">Profile</string>
+
+    <!-- Dashboard -->
+    <string name="welcome_hosteller">Hey, %s 👋</string>
+    <string name="namaste">Hey, %s 👋</string>
+    <string name="hostel_room_badge">Room %1$s • %2$s</string>
+    <string name="available_machines">Available</string>
+    <string name="in_use_machines">In Use</string>
+    <string name="under_maintenance">Maintenance</string>
+    <string name="total_machines">Total</string>
+    <string name="all_blocks">All Blocks</string>
+    <string name="block_a">Block A</string>
+    <string name="block_b">Block B</string>
+    <string name="all_floors">All Floors</string>
+    <string name="floor_n">Floor %d</string>
+    <string name="filter_all">All</string>
+    <string name="filter_washers">Washers</string>
+    <string name="filter_dryers">Dryers</string>
+    <string name="available_only">Available Only</string>
+    <string name="search_machines_hint">Search machines by name or ID…</string>
+    <string name="no_machines_found">No machines match your current filters</string>
+    <string name="quick_start_wash">Start Wash</string>
+    <string name="book_this_machine">Book Slot</string>
+    <string name="report_issue">Report Issue</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="hostel_notices_rules">Hostel Guidelines &amp; Notices</string>
+    <string name="active_cycle_running">Active Wash Cycle</string>
+    <string name="mins_left">%d mins left</string>
+    <string name="capacity_kg">%s kg capacity</string>
+    <string name="sync_started">Sync Started</string>
+    <string name="sync_completed">Sync Completed</string>
+    <string name="sync_failed">Sync Failed</string>
+
+    <!-- Slot Booking -->
+    <string name="book_laundry_slot">Reserve Laundry Slot</string>
+    <string name="schedule_appointment">Reserve Laundry Slot</string>
+    <string name="select_date">Select Date</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="select_machine">Select Machine</string>
+    <string name="select_time_slot">Select Time Slot</string>
+    <string name="select_wash_cycle">Select Wash Cycle</string>
+    <string name="notes_optional">Special Instructions / Notes (Optional)</string>
+    <string name="confirm_slot_booking">Confirm Booking</string>
+    <string name="confirm_booking">Confirm Booking</string>
+    <string name="slot_booked_success_title">Slot Reserved Successfully!</string>
+    <string name="appointment_success">Slot reserved successfully!</string>
+    <string name="slot_already_booked">This slot is already reserved by another hosteller</string>
+    <string name="select_machine_error">Please select an available machine</string>
+    <string name="ok">OK</string>
+    <string name="success">Success</string>
+    <string name="error">Error</string>
+
+    <!-- My Slots & Activity -->
+    <string name="my_laundry_activity">My Laundry Activity</string>
+    <string name="tab_active_upcoming">Active &amp; Upcoming</string>
+    <string name="tab_history">History</string>
+    <string name="no_active_slots">No active or upcoming laundry slots</string>
+    <string name="no_history_slots">No past laundry history yet</string>
+    <string name="cancel_booking_confirm_title">Cancel Reservation</string>
+    <string name="cancel_booking_confirm_msg">Are you sure you want to cancel this slot reservation?</string>
+    <string name="mark_cycle_completed">Mark Collected</string>
+
+    <!-- Issue Reporting -->
+    <string name="report_machine_breakdown">Report Machine Breakdown</string>
+    <string name="select_faulty_machine">Select Faulty Machine</string>
+    <string name="issue_category">Issue Type</string>
+    <string name="issue_desc_hint">Describe the issue (e.g., water not draining, drum vibration, power off)…</string>
+    <string name="submit_report">Submit Maintenance Report</string>
+    <string name="report_submitted_success">Report submitted. Maintenance has been notified!</string>
+
+    <!-- Profile & Settings -->
+    <string name="hosteller_profile">Hosteller Profile</string>
+    <string name="student_id">Student / Roll ID</string>
+    <string name="room_number">Room Number</string>
+    <string name="hostel_block">Hostel Block</string>
+    <string name="floor">Floor</string>
+    <string name="total_washes_done">Washes Done</string>
+    <string name="upcoming_reservations">Upcoming</string>
+    <string name="notification_settings">Notification Settings</string>
+    <string name="language_selection">Language Selection</string>
+    <string name="change_mpin">Change 4-Digit MPIN</string>
+    <string name="set_mpin">Set 4-Digit MPIN</string>
+    <string name="logout">Logout</string>
+    <string name="logout_confirm_title">Logout</string>
+    <string name="logout_confirm_msg">Are you sure you want to logout from LaundrySlot?</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="close">Close</string>
+    <string name="select_language">Select Language</string>
+    <string name="sync_status">Sync Status</string>
+    <string name="sync_now">Sync Now</string>
+    <string name="syncing">Syncing…</string>
+    <string name="last_synced">Last Synced:</string>
+    <string name="pending_items">Pending Items:</string>
+    <string name="never">Never</string>
+    <string name="just_now">Just now</string>
+    <string name="mins_ago">%d mins ago</string>
+    <string name="hours_ago">%d hours ago</string>
+
+    <!-- Login & Auth -->
+    <string name="laundry_slot_title">LaundrySlot</string>
+    <string name="laundry_slot_tagline">Hostel Laundry Made Effortless</string>
+    <string name="worker_login">Hosteller Login</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+    <string name="student_id_label">Student / Roll ID</string>
+    <string name="student_id_or_email_label">Student ID or Email</string>
+    <string name="aasha_id">Student ID</string>
+    <string name="password">Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="room_number_label">Room Number</string>
+    <string name="hostel_block_label">Hostel Block</string>
+    <string name="serving_area">Hostel Block / Wing</string>
+    <string name="login_with_mpin">Login with 4-Digit MPIN</string>
+    <string name="login_with_aasha_id">Login with Student ID</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="mpin_setup_msg">Set a 4-digit PIN for quick app unlock</string>
+    <string name="mpin_label">4-Digit MPIN</string>
+    <string name="mpin_entry_msg">Enter your 4-digit MPIN to continue</string>
+    <string name="unlock_app">Unlock App</string>
+    <string name="use_id_instead">Use Student ID instead</string>
+    <string name="new_user_signup">New to Hostel? Create Account</string>
+    <string name="already_have_account">Already have an account? Login</string>
+    <string name="create_account">Create Account</string>
+    <string name="setup_secure_mpin">Setup Secure MPIN</string>
+    <string name="enter_mpin">Enter MPIN</string>
+    <string name="id_cannot_empty">Student ID cannot be empty</string>
+    <string name="password_cannot_empty">Password cannot be empty</string>
+    <string name="name_cannot_empty">Name cannot be empty</string>
+    <string name="id_too_short">Student ID must be at least 3 characters</string>
+    <string name="email_invalid">Please enter a valid email</string>
+    <string name="password_too_short">Password must be at least 6 characters</string>
+    <string name="locality_cannot_empty">Hostel block cannot be empty</string>
+    <string name="mpin_invalid">MPIN must be exactly 4 digits</string>
+    <string name="account_setup_success">Hosteller account &amp; MPIN set successfully!</string>
+    <string name="set_password">Set Password</string>
+
+    <!-- Compat Stubs -->
+    <string name="performance_summary">Laundry Statistics</string>
+    <string name="patients">Machines</string>
+    <string name="visits">Cycles</string>
+    <string name="vaccines">Bookings</string>
+    <string name="meds">Dryers</string>
+    <string name="set_daily_reminder_time">Reminder Time</string>
+    <string name="syncing_in_progress">Syncing in progress…</string>
+    <string name="search_patients">Search Machines</string>
+    <string name="search_results">Results</string>
+    <string name="todays_tasks">Today\'s Slots</string>
+    <string name="yrs_gender">%1$d yrs • %2$s</string>
+    <string name="select_patient">Select Machine</string>
+    <string name="new_appointment">New Slot</string>
+    <string name="new_patient">Add Booking</string>
+    <string name="add_visit">Quick Wash</string>
+    <string name="record_vaccination">Report Issue</string>
+    <string name="empowering_asha">Hostel Laundry Management</string>
+</resources>

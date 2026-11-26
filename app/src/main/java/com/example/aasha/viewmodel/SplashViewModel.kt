@@ -1,0 +1,55 @@
+package com.example.aasha.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.aasha.data.local.SessionManager
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+sealed class SplashRoute {
+    object Idle : SplashRoute()
+    object Login : SplashRoute()
+    object MpinVerification : SplashRoute()
+    object Dashboard : SplashRoute()
+}
+
+@HiltViewModel
+class SplashViewModel @Inject constructor(
+    private val sessionManager: SessionManager
+) : ViewModel() {
+
+    val isLoggedIn: StateFlow<Boolean> = sessionManager.isLoggedIn
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
+    private val _hasMpin = MutableStateFlow(false)
+    val hasMpin: StateFlow<Boolean> = _hasMpin.asStateFlow()
+
+    private val _route = MutableStateFlow<SplashRoute>(SplashRoute.Idle)
+    val route: StateFlow<SplashRoute> = _route.asStateFlow()
+
+    init {
+        checkSession()
+    }
+
+    private fun checkSession() {
+        viewModelScope.launch {
+            val loggedIn = sessionManager.isLoggedIn.first()
+            val lastId = sessionManager.lastHostellerId.first()
+            val mpinConfigured = lastId != null && sessionManager.hasMpin(lastId)
+            _hasMpin.value = mpinConfigured
+
+            _route.value = when {
+                loggedIn && mpinConfigured -> SplashRoute.MpinVerification
+                loggedIn -> SplashRoute.Dashboard
+                else -> SplashRoute.Login
+            }
+        }
+    }
+}

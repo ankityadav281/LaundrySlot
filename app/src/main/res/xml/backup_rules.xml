@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <exclude domain="sharedpref" path="secure_mpin_prefs.xml" />
+    <exclude domain="sharedpref" path="secure_mpin_prefs_fallback.xml" />
+    <exclude domain="file" path="datastore/hosteller_session.preferences_pb" />
+    <exclude domain="database" path="laundryslot_db" />
+    <exclude domain="database" path="laundryslot_db-wal" />
+    <exclude domain="database" path="laundryslot_db-shm" />
+</full-backup-content>
