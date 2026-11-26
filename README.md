@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # LaundrySlot — Smart Hostel Laundry Booking Application
 
 **LaundrySlot** is a production-ready Android application built for hostel residents and students to check real-time washing machine and dryer availability, start instant wash cycles, reserve upcoming time slots with cross-device conflict protection, track active wash countdowns, and report machine faults—eliminating queues and laundry room clashes.
@@ -114,3 +115,6 @@ Before rolling out to a university hostel:
 2. **Seed `/machines` Collection**: Because `firestore.rules` restricts `/machines` creation and `OUT_OF_ORDER -> AVAILABLE` maintenance clearance to `admin == true` custom claims, run an admin script to populate `/machines/{machineId}` documents matching `AppDatabase.createSeedMachines()`.
 3. **Enable Firebase App Check**: Enforce Play Integrity in the Firebase Console for Firestore and Authentication to prevent non-app API abuse.
 4. **Sign-In on New Devices**: Hostellers who registered with a custom email (different from `{studentId}@hostel.edu`) should enter their **registered email address** when signing in on a brand-new device, unless a backend lookup Cloud Function (e.g., `resolveStudentEmail`) is added.
+=======
+# LaundrySlot
+>>>>>>> 23a9f19ab0b23fd13fcb078a2736d1450a162f9d
